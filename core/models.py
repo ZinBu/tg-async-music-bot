@@ -55,7 +55,8 @@ class Player(Document):
             return [ObjectId(x) for x in self.progress.passed]
 
     async def deactivate(self):
-        self.score = self.progress.score
+        if self.score < self.progress.score:
+            self.score = self.progress.score
         self.progress = None
         self.active = False
         await self.save()
