@@ -1,0 +1,18 @@
+image: python:3.7.2
+
+pipelines:
+  default:
+    - step:
+          name: Create artifact
+          script:
+            - tar czfv application.tgz *
+          artifacts:
+            - application.tgz
+    - step:
+        script:
+          - pipe: atlassian/heroku-deploy:1.0.0
+            variables:
+              HEROKU_API_KEY: $HEROKU_API_KEY
+              HEROKU_APP_NAME: $HEROKU_MUSIC_BOT
+              ZIP_FILE: 'application.tgz'
+
